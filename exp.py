@@ -59,7 +59,7 @@ while len(img_list) > 0:
 
     # Shows 3 second countdown to image display
     for n in range(3, 0, -1):
-        countdown_msg.text = "%i" % n
+        countdown_msg.text = f"{n}"
         countdown_msg.draw()
         window.flip()
         core.wait(1.0)
@@ -80,8 +80,9 @@ while len(img_list) > 0:
     end_time = time.time()
     reaction_time = end_time - start_time
 
+    #TODO: import response
     data.loc[len(data)] = ([img_name, answer[0], '', reaction_time])
-    # logging.log(level=logging.DATA, msg="The key pressed for the picture %s was %s." % (img_name, answer[0]))
+    # logging.log(level=logging.DATA, msg=f"The key pressed for the picture {img_name} was {answer[0]}."))
 
 instruction_msg.text = "Test completed. Closing window..."
 instruction_msg.draw()
@@ -92,7 +93,7 @@ window.close()
 # Output individual participant data to .csv file
 if not os.path.exists('data'):
     os.makedirs('data')
-data.to_csv('data/data_%s.csv' % id)
+data.to_csv(f"data/data_{id}.csv")
 
 # Output summarized participant data to summary file
 accuracy = len(data.query('Response == Actual')) / len(data)
@@ -106,5 +107,5 @@ with open('summary.csv') as file:
     index = sum(1 for line in file)
 
 with open('summary.csv', 'a') as file:
-    file.write("%i,%s,%f" % (index, id, accuracy))
+    file.write(f"{index},{id},{accuracy}")
     file.write("\n")
