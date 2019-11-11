@@ -25,9 +25,22 @@ msg_display_time = 0.5                        # how long instructions/messages a
 
 # Experimental options
 key_list = ['z', 'n']                         # options for user response (first is the response for yes)
-time_to_show = 0.200                          # time for image to be displayed in seconds
-countdown_time = 1.5                          # countdown duration (from 3 to 1) in seconds
-num_each = 10                                  # number of damaged buildings and undamaged buildings to show
+num_each = 12                                 # number of damaged buildings and undamaged buildings to show
+
+'''
+The values described here determine how much each answer affects the next presentation time.
+
+startVal:       the time to begin at
+stepType:       how each step is added/subtracted ('lin' for linear, 'db' for decibel, 'log' for log)
+stepSizes:      the step size after each reversal
+nUp:            number of incorrect guesses before staircase level increases
+nDown:          number of correct guesses before staircase level decreases
+minVal:         lowest presentation time that can be reached
+'''
+staircase = data.StairHandler(startVal = 3.0,
+                        stepType = 'db', stepSizes = [4, 2, 1],
+                        nUp = 2, nDown = 2, minVal = 0.200, 
+                        nTrials = num_each * 2)
 
 # File paths
 img_dir = r"images/"                          # directory containing images to display
@@ -72,23 +85,12 @@ def main():
     window = visual.Window(size=window_dims, color=bg_color, monitor='monitor', fullscr=full_screen)
     frame_rate = window.getActualFrameRate()
 
-    instruction_msg = visual.TextStim(window, color=text_color, text="Each image will be shown briefly after a short countdown.")
-    instruction_msg.draw()
-    window.flip()
-    core.wait(msg_display_time)
-
-    instruction_msg = visual.TextStim(window, color=text_color, text=f"You will be asked whether the building shown is damaged.\n\nPlease press {key_list[0]} for yes and {key_list[1]} for no.")
+    instruction_msg = visual.TextStim(window, color=text_color, text=f"You will be asked whether the building shown is damaged.\n\nEach image will be shown briefly.\n\nPlease press {key_list[0]} for yes and {key_list[1]} for no.")
     instruction_msg.draw()
     window.flip()
     core.wait(msg_display_time)
 
     img = visual.ImageStim(window, size=img_dims)
-
-    # The values here determine how much each answer affects the next presentation time
-    staircase = data.StairHandler(startVal = 3.0,
-                          stepType = 'db', stepSizes = 2,
-                          nUp = 2, nDown = 2, minVal = 0.200, 
-                          nTrials = len(img_list))
 
     # Run through image list with participant
     last_time = 0

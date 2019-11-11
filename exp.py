@@ -98,7 +98,7 @@ def main():
     data = pd.DataFrame(columns=data_columns)
 
     # Run through image list with participant
-    while len(img_list) > 395:
+    while len(img_list) > 0:
 
         '''
         # Show countdown from 3 to 1 to image display
