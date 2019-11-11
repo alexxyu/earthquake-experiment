@@ -131,9 +131,10 @@ def main():
         # Track reaction time for user response
         if keypress is None or len(keypress) == 0:
             keypress = event.waitKeys(keyList=key_list)
-        end_time = time.time()
-        reaction_time = end_time - start_time
 
+        end_time = time.time()
+
+        reaction_time = float(format(end_time - start_time, '.3f'))
         event.clearEvents()
 
         answer = 'y' if keypress[0] == key_list[0] else 'n'
