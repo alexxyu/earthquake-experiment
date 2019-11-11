@@ -18,11 +18,11 @@ data_columns = ['Image', 'Response', 'Actual', 'Time']
 # Graphical options
 window_dims = [600,600]                       # dimensions of window display (if not full-screen)
 bg_color = "black"                            # window background color
-img_dims = [1.0, 1.0]                         # how much of window that each image takes up
+img_dims = [1.0, 1.0]                         # how much image is resized onto window (set to None if full-window)
 full_screen = True                            # whether to have display be full-screen
 
 # Experimental options
-key_list = ['q', 'p']                         # options for user response (first is the response for yes)
+key_list = ['z', 'n']                         # options for user response (first is the response for yes)
 time_to_show = 0.200                          # time for image to be displayed in seconds
 countdown_time = 1.5                          # countdown duration (from 3 to 1) in seconds
 
@@ -71,7 +71,7 @@ def main():
     id = id[0]
 
     # Set up window and how many frames image should be displayed depending on refresh rate of monitor
-    window = visual.Window(size=window_dims, color=bg_color, monitor='monitor', fullscr=True)
+    window = visual.Window(size=window_dims, color=bg_color, monitor='monitor', fullscr=full_screen)
     frame_rate = window.getActualFrameRate()
     frames_to_show = (int) (round(time_to_show * frame_rate))
 
@@ -87,7 +87,7 @@ def main():
     data = pd.DataFrame(columns=data_columns)
 
     # Run through image list with participant
-    while len(img_list) > 395:
+    while len(img_list) > 0:
 
         # Show countdown from 3 to 1 to image display
         for n in range(3, 0, -1):
