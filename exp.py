@@ -1,8 +1,9 @@
-from psychopy import visual, event, core, logging, gui
 import os
 import time
+import random
 import numpy as np
 import pandas as pd
+from psychopy import visual, event, core, logging, gui
 
 # CONSTANTS
 '''
@@ -25,8 +26,13 @@ nodamage_subdir = "NoDamage"                  # subdirectory name to images of u
 # UTILITY FUNCTIONS
 def get_imgs(img_dir, damage_subdir, nodamage_subdir):
     imgs_list = []
+
     imgs_list.extend([f"{damage_subdir}/" + f for f in os.listdir(img_dir + damage_subdir)])
-    imgs_list.extend([f"{nodamage_subdir}/" + f for f in os.listdir(img_dir + nodamage_subdir)])
+    all_damage_imgs = [f"{nodamage_subdir}/" + f for f in os.listdir(img_dir + nodamage_subdir)]
+
+    # Make number of images between two labels equal
+    imgs_list.extend(random.sample(all_damage_imgs, len(imgs_list)))
+
     return imgs_list
 
 def parse_img(img_file):
