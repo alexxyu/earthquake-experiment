@@ -30,6 +30,8 @@ countdown_time = 1.5                          # countdown duration (from 3 to 1)
 img_dir = r"images/"                          # directory containing images to display
 damage_subdir = "Damage"                      # subdirectory name to images of damaged buildings
 nodamage_subdir = "NoDamage"                  # subdirectory name to images of undamged buildings
+data_dir = r"data"                            # directory to data output path
+csv_filename = "summary.csv"                  # filename of summary data file
 
 # UTILITY FUNCTIONS
 def get_imgs(img_dir, damage_subdir, nodamage_subdir):
@@ -126,23 +128,23 @@ def main():
     window.close()
 
     # Output individual participant data to .csv file
-    if not os.path.exists('data'):
-        os.makedirs('data')
-    data.to_csv(f"data/data_{id}.csv")
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+    data.to_csv(f"{data_dir}/data_{id}.csv")
 
     # Create summary file if it doesn't already exist
-    if not os.path.exists('summary.csv'):
+    if not os.path.exists(csv_filename):
         summary = pd.DataFrame(columns=['ID', 'Accuracy'])
-        summary.to_csv('summary.csv')
+        summary.to_csv(csv_filename)
 
     # Output summarized participant data to summary file
     accuracy = len(data.query('Response == Actual')) / len(data)
 
     index = 0
-    with open('summary.csv') as file:
+    with open(csv_filename) as file:
         index = sum(1 for line in file)
 
-    with open('summary.csv', 'a') as file:
+    with open(csv_filename, 'a') as file:
         file.write(f"{index},{id},{accuracy}")
         file.write("\n")
 
