@@ -28,6 +28,7 @@ key_list = ['z', 'n']                         # options for user response (first
 num_each = 12                                 # number of damaged buildings and undamaged buildings to show
 
 '''
+Staircase Procedure Handler
 The values described here determine how much each answer affects the next presentation time.
 
 startVal:       the time to begin at
@@ -94,11 +95,16 @@ def main():
 
     # Run through image list with participant
     last_time = 0
+    log = open('time_log.txt', 'a')
+    log.write('======================================================================\n')
+    log.write('TEST\n')
+    log.write('======================================================================\n')
     for curr_time in staircase:
 
         if len(img_list) == 0:
             break
         print(f"Will display image for {curr_time} seconds.")
+        log.write(f"Will display image for {curr_time} seconds.\n")
 
         # Get and parse random image's information
         subdir, img_name = get_random_img(img_list)
@@ -132,6 +138,8 @@ def main():
         last_time = curr_time
 
     print(f"The experiment's presentation time will be {last_time} seconds.")
+    log.write(f"The experiment's presentation time will be {last_time} seconds.\n\n")
+    log.close()
 
     instruction_msg.text = "Test completed. Closing window..."
     instruction_msg.draw()
