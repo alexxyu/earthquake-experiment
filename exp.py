@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from psychopy import visual, event, core, logging, gui
 
-# CONSTANTS
+# PARAMETERS / SETTINGS
 '''
 Columns in the .csv file containing raw experiment data:
 Image - image filename shown
@@ -15,12 +15,19 @@ Time - response time (in seconds) defined as time between image display and user
 '''
 data_columns = ['Image', 'Response', 'Actual', 'Time']
 
-window_dims = [600,600]                       # dimensions of window display
-key_list = ['y', 'n']                         # options for user response
+# Graphical options
+window_dims = [600,600]                       # dimensions of window display (if not full-screen)
+bg_color = "black"                            # window background color
+img_dims = [1.0, 1.0]                         # how much of window that each image takes up
+full_screen = True                            # whether to have display be full-screen
+
+# Experimental options
+key_list = ['q', 'p']                         # options for user response (first is the response for yes)
 time_to_show = 0.200                          # time for image to be displayed in seconds
 countdown_time = 1.5                          # countdown duration (from 3 to 1) in seconds
-img_dir = r"images/"                          # directory containing images to display
 
+# File paths
+img_dir = r"images/"                          # directory containing images to display
 damage_subdir = "Damage"                      # subdirectory name to images of damaged buildings
 nodamage_subdir = "NoDamage"                  # subdirectory name to images of undamged buildings
 
@@ -64,23 +71,23 @@ def main():
     id = id[0]
 
     # Set up window and how many frames image should be displayed depending on refresh rate of monitor
-    window = visual.Window(size=window_dims, monitor='monitor')
+    window = visual.Window(size=window_dims, color=bg_color, monitor='monitor', fullscr=True)
     frame_rate = window.getActualFrameRate()
     frames_to_show = (int) (round(time_to_show * frame_rate))
 
-    instruction_msg = visual.TextStim(window, text="Each image will be shown briefly after a countdown from 3 to 1.")
+    instruction_msg = visual.TextStim(window, text="Each image will be shown briefly after a short countdown.")
     instruction_msg.draw()
     window.flip()
     core.wait(3)
 
-    instruction_msg = visual.TextStim(window, text="Is the building damaged?\n\nPlease press 'y' for yes and 'n' for no.")
+    instruction_msg = visual.TextStim(window, text=f"Is the building damaged?\n\nPlease press {key_list[0]} for yes and {key_list[1]} for no.")
     countdown_msg = visual.TextStim(window, text=None)
-    img = visual.ImageStim(window)
+    img = visual.ImageStim(window, size=img_dims)
 
     data = pd.DataFrame(columns=data_columns)
 
     # Run through image list with participant
-    while len(img_list) > 0:
+    while len(img_list) > 395:
 
         # Show countdown from 3 to 1 to image display
         for n in range(3, 0, -1):
@@ -104,11 +111,13 @@ def main():
         window.flip()
 
         # Track reaction time for user response
-        answer = event.waitKeys(keyList=key_list)
+        keypress = event.waitKeys(keyList=key_list)
         end_time = time.time()
         reaction_time = end_time - start_time
 
-        data.loc[len(data)] = ([img_name, answer[0], truth, reaction_time])
+        answer = 'y' if keypress[0] == key_list[0] else 'n'
+
+        data.loc[len(data)] = ([img_name, answer, truth, reaction_time])
 
     instruction_msg.text = "Test completed. Closing window..."
     instruction_msg.draw()
