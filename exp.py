@@ -17,14 +17,16 @@ data_columns = ['Image', 'Response', 'Actual', 'Time']
 
 # Graphical options
 window_dims = [600,600]                       # dimensions of window display (if not full-screen)
-bg_color = "black"                            # window background color
+bg_color = "#827F7B"
+text_color = "white"
 img_dims = [1.0, 1.0]                         # how much image is resized onto window (set to None if full-window)
 full_screen = True                            # whether to have display be full-screen
+msg_display_time = 3.0                        # how long instructions/messages are displayed on screen
 
 # Experimental options
 key_list = ['z', 'n']                         # options for user response (first is the response for yes)
-time_to_show = 0.200                          # time for image to be displayed in seconds
-countdown_time = 1.5                          # countdown duration (from 3 to 1) in seconds
+time_to_show = 2                              # time for image to be displayed in seconds
+countdown_time = 0.200                        # countdown duration (from 3 to 1) in seconds
 
 # File paths
 img_dir = r"images/"                          # directory containing images to display
@@ -36,12 +38,13 @@ csv_filename = "summary.csv"                  # filename of summary data file
 # UTILITY FUNCTIONS
 def get_imgs(img_dir, damage_subdir, nodamage_subdir):
     imgs_list = []
-
-    imgs_list.extend([f"{damage_subdir}/" + f for f in os.listdir(img_dir + damage_subdir)])
-    all_damage_imgs = [f"{nodamage_subdir}/" + f for f in os.listdir(img_dir + nodamage_subdir)]
+    
+    damage_imgs = [f"{damage_subdir}/" + f for f in os.listdir(img_dir + damage_subdir)]
+    nodamage_imgs = [f"{nodamage_subdir}/" + f for f in os.listdir(img_dir + nodamage_subdir)]
 
     # Make number of images between two labels equal
-    imgs_list.extend(random.sample(all_damage_imgs, len(imgs_list)))
+    imgs_list.extend(damage_imgs)
+    imgs_list.extend(random.sample(nodamage_imgs, len(imgs_list)))
 
     return imgs_list
 
@@ -55,7 +58,14 @@ def get_random_img(img_list):
     img_list.remove(img)
     return parse_img(img)
 
-# MAIN ROUTINE
+# EXPERIMENTAL ROUTINE
+
+def demo():
+    return 0
+
+def main_test():
+    return 0
+
 def main():
     img_list = get_imgs(img_dir, damage_subdir, nodamage_subdir)
     print(f"{len(img_list)} images loaded.")
@@ -77,26 +87,27 @@ def main():
     frame_rate = window.getActualFrameRate()
     frames_to_show = (int) (round(time_to_show * frame_rate))
 
-    instruction_msg = visual.TextStim(window, text="Each image will be shown briefly after a short countdown.")
+    instruction_msg = visual.TextStim(window, color=text_color, text=f"You will be asked whether the building shown is damaged.\n\nEach image will be shown briefly.\n\nPlease press {key_list[0]} for yes and {key_list[1]} for no.")
     instruction_msg.draw()
     window.flip()
-    core.wait(3)
+    core.wait(msg_display_time)
 
-    instruction_msg = visual.TextStim(window, text=f"Is the building damaged?\n\nPlease press {key_list[0]} for yes and {key_list[1]} for no.")
-    countdown_msg = visual.TextStim(window, text=None)
+    # countdown_msg = visual.TextStim(window, color=text_color, text=None)
     img = visual.ImageStim(window, size=img_dims)
 
     data = pd.DataFrame(columns=data_columns)
 
     # Run through image list with participant
-    while len(img_list) > 0:
+    while len(img_list) > 395:
 
+        '''
         # Show countdown from 3 to 1 to image display
         for n in range(3, 0, -1):
             countdown_msg.text = f"{n}"
             countdown_msg.draw()
             window.flip()
             core.wait(countdown_time / 3)
+        '''
 
         # Get and parse random image's information
         subdir, img_name = get_random_img(img_list)
@@ -105,17 +116,25 @@ def main():
 
         # Display the image for set number of frames
         start_time = time.time()
+        keypress = None
         for _ in range(frames_to_show):
             img.draw()
             window.flip()
 
-        instruction_msg.draw()
+            keypress = event.getKeys(keyList=key_list)
+            if len(keypress) > 0:
+                break
+
+        #instruction_msg.draw()
         window.flip()
 
         # Track reaction time for user response
-        keypress = event.waitKeys(keyList=key_list)
+        if keypress is None or len(keypress) == 0:
+            keypress = event.waitKeys(keyList=key_list)
         end_time = time.time()
         reaction_time = end_time - start_time
+
+        event.clearEvents()
 
         answer = 'y' if keypress[0] == key_list[0] else 'n'
 
@@ -124,7 +143,7 @@ def main():
     instruction_msg.text = "Test completed. Closing window..."
     instruction_msg.draw()
     window.flip()
-    core.wait(3.0)
+    core.wait(msg_display_time)
     window.close()
 
     # Output individual participant data to .csv file
