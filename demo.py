@@ -3,7 +3,7 @@ import time
 import random
 import numpy as np
 import pandas as pd
-from psychopy import visual, event, core, logging, gui, data
+from psychopy import visual, event, core, logging, gui, data, sound
 
 # PARAMETERS / SETTINGS
 '''
@@ -11,21 +11,22 @@ Columns in the .csv file containing raw experiment data:
 Image - image filename shown
 Response - user key input to prompt ('y' for yes and 'n' for no)
 Actual - actual/expected answer to prompt
-Time - response time (in seconds) defined as time between image display and user response
+Pres Time - how long the image was shown
+Response Time - response time (in seconds) defined as time between image display and user response
 '''
-data_columns = ['Image', 'Response', 'Actual', 'Time']
+data_columns = ['Image', 'Response', 'Actual', 'Pres Time', 'Response Time']
 
 # Graphical options
 window_dims = [600,600]                       # dimensions of window display (if not full-screen)
 bg_color = "#827F7B"
 text_color = "white"
-img_dims = None                               # how much image is resized onto window (set to None if full-window)
-full_screen = False                           # whether to have display be full-screen
-msg_display_time = 0.5                        # how long instructions/messages are displayed on screen
+img_dims = [1.0, 1.0]                         # how much image is resized onto window (set to None if full-window)
+full_screen = True                            # whether to have display be full-screen
+msg_display_time = 3.0                        # how long instructions/messages are displayed on screen
 
 # Experimental options
 key_list = ['z', 'n']                         # options for user response (first is the response for yes)
-num_each = 12                                 # number of damaged buildings and undamaged buildings to show
+num_each = 20                                 # number of damaged buildings and undamaged buildings to show
 
 '''
 Staircase Procedure Handler
@@ -47,6 +48,7 @@ staircase = data.StairHandler(startVal = 3.0,
 img_dir = r"images/"                          # directory containing images to display
 damage_subdir = "Damage"                      # subdirectory name to images of damaged buildings
 nodamage_subdir = "NoDamage"                  # subdirectory name to images of undamged buildings
+data_dir = r"demo_data"                       # directory to data output path
 
 # UTILITY FUNCTIONS
 def get_imgs(img_dir, num_each, damage_subdir, nodamage_subdir):
@@ -82,29 +84,41 @@ def main():
     # Sets system time as the random seed
     np.random.seed(seed=None)
 
+    # Prompt GUI for participant ID
+    dlg = gui.Dlg(title="Enter participant ID:")
+    dlg.addField('Participant ID:')
+    id = dlg.show()
+    if not dlg.OK:
+        print('Program aborted.')
+        exit()
+    id = id[0]
+
     # Set up window and how many frames image should be displayed depending on refresh rate of monitor
     window = visual.Window(size=window_dims, color=bg_color, monitor='monitor', fullscr=full_screen)
     frame_rate = window.getActualFrameRate()
 
-    instruction_msg = visual.TextStim(window, color=text_color, text=f"You will be asked whether the building shown is damaged.\n\nEach image will be shown briefly.\n\nPlease press {key_list[0]} for yes and {key_list[1]} for no.")
+    instruction_msg = visual.TextStim(window, color=text_color, text=f"You will be asked whether the building shown is damaged. Each image will be shown briefly.\n\nPlease press {key_list[0]} for yes and {key_list[1]} for no.\n\nPress any key to continue.")
     instruction_msg.draw()
     window.flip()
-    core.wait(msg_display_time)
+    event.waitKeys()
+
+    instruction_msg.text = f"We will start with a demo experiment in which the images will be shown for different amounts of time depending on your accuracy.\n\nYou will hear a beep if you are correct.\n\nPress any key to continue."
+    instruction_msg.draw()
+    window.flip()
+    event.waitKeys()
 
     img = visual.ImageStim(window, size=img_dims)
+    data = pd.DataFrame(columns=data_columns)
 
     # Run through image list with participant
     last_time = 0
-    log = open('time_log.txt', 'a')
-    log.write('======================================================================\n')
-    log.write('TEST\n')
-    log.write('======================================================================\n')
     for curr_time in staircase:
 
         if len(img_list) == 0:
             break
+
+        curr_time = float(format(curr_time, '.3f'))
         print(f"Will display image for {curr_time} seconds.")
-        log.write(f"Will display image for {curr_time} seconds.\n")
 
         # Get and parse random image's information
         subdir, img_name = get_random_img(img_list)
@@ -114,12 +128,14 @@ def main():
         # Display the image for set number of frames
         frames_to_show = get_frames_to_show(curr_time, frame_rate)
         keypress = None
+        start_time, end_time = time.time(), 0
         for _ in range(frames_to_show):
             img.draw()
             window.flip()
 
             keypress = event.getKeys(keyList=key_list)
             if len(keypress) > 0:
+                end_time = time.time()
                 break
 
         window.flip()
@@ -127,19 +143,27 @@ def main():
         # Track reaction time for user response
         if keypress is None or len(keypress) == 0:
             keypress = event.waitKeys(keyList=key_list)
+            end_time = time.time()
+        reaction_time = float(format(end_time - start_time, '.3f'))
         
         answer = 'y' if keypress[0] == key_list[0] else 'n'
         event.clearEvents()
         if answer == truth:
+            beep = sound.Sound('A', secs=0.25)
+            beep.play()
             staircase.addResponse(1)
         else:
             staircase.addResponse(0)
 
+        data.loc[len(data)] = ([img_name, answer, truth, curr_time, reaction_time])
         last_time = curr_time
 
     print(f"The experiment's presentation time will be {last_time} seconds.")
-    log.write(f"The experiment's presentation time will be {last_time} seconds.\n\n")
-    log.close()
+
+    # Output individual participant data to .csv file
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+    data.to_csv(f"{data_dir}/data_{id}.csv")
 
     instruction_msg.text = "Test completed. Closing window..."
     instruction_msg.draw()
