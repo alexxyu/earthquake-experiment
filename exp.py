@@ -18,6 +18,7 @@ data_columns = ['Image', 'Response', 'Actual', 'Time']
 window_dims = [600,600]                       # dimensions of window display
 key_list = ['y', 'n']                         # options for user response
 time_to_show = 0.200                          # time for image to be displayed in seconds
+countdown_time = 1.5                          # countdown duration (from 3 to 1) in seconds
 img_dir = r"images/"                          # directory containing images to display
 
 damage_subdir = "Damage"                      # subdirectory name to images of damaged buildings
@@ -67,7 +68,7 @@ def main():
     frame_rate = window.getActualFrameRate()
     frames_to_show = (int) (round(time_to_show * frame_rate))
 
-    instruction_msg = visual.TextStim(window, text="Each image will be shown briefly after a 3 second countdown.")
+    instruction_msg = visual.TextStim(window, text="Each image will be shown briefly after a countdown from 3 to 1.")
     instruction_msg.draw()
     window.flip()
     core.wait(3)
@@ -81,12 +82,12 @@ def main():
     # Run through image list with participant
     while len(img_list) > 0:
 
-        # Show 3 second countdown to image display
+        # Show countdown from 3 to 1 to image display
         for n in range(3, 0, -1):
             countdown_msg.text = f"{n}"
             countdown_msg.draw()
             window.flip()
-            core.wait(1.0)
+            core.wait(countdown_time / 3)
 
         # Get and parse random image's information
         subdir, img_name = get_random_img(img_list)
