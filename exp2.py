@@ -52,9 +52,10 @@ def draw_quadrants(window, img, quadrants):
 
 def get_response(mouse, quadrants, window, img):
 
-    def select_quadrant(quadrants, quadrants_selected, window, img):
+    def redraw_quadrants(quadrants, quadrants_selected, window, img):
         img.draw()
 
+        # Draws thick blue border around the selected quadrants
         for q in quadrants:
             q.lineColor = "red"
             q.lineWidth = 1.0
@@ -72,35 +73,18 @@ def get_response(mouse, quadrants, window, img):
 
         if len(event.getKeys(keyList=['escape'])) > 0:
             return None
-
-        if mouse.isPressedIn(quadrants[0]):
-            event.clearEvents()
-            if 1 in quads_pressed:
-                quads_pressed.remove(1)
-            else:
-                quads_pressed.append(1)
-            select_quadrant(quadrants, quads_pressed, window, img)
-        elif mouse.isPressedIn(quadrants[1]):
-            event.clearEvents()
-            if 2 in quads_pressed:
-                quads_pressed.remove(2)
-            else:
-                quads_pressed.append(2)
-            select_quadrant(quadrants, quads_pressed, window, img)
-        elif mouse.isPressedIn(quadrants[2]):
-            event.clearEvents()
-            if 3 in quads_pressed:
-                quads_pressed.remove(3)
-            else:
-                quads_pressed.append(3)
-            select_quadrant(quadrants, quads_pressed, window, img)
-        elif mouse.isPressedIn(quadrants[3]):
-            event.clearEvents()
-            if 4 in quads_pressed:
-                quads_pressed.remove(4)
-            else:
-                quads_pressed.append(4)
-            select_quadrant(quadrants, quads_pressed, window, img)
+        for qn in range(len(quadrants)):
+            # Update GUI and quadrants pressed if mouse clicked in one of them
+            if mouse.isPressedIn(quadrants[qn]):
+                event.clearEvents()
+                if qn+1 in quads_pressed:
+                    # Deselect quadrant
+                    quads_pressed.remove(qn+1)
+                else:
+                    # Select quadrant
+                    quads_pressed.append(qn+1)
+                redraw_quadrants(quadrants, quads_pressed, window, img)
+                break
 
         core.wait(0.001)
 
@@ -112,10 +96,10 @@ def main():
     img_list = get_imgs(img_dir)
     print(f"{len(img_list)} images loaded.")
 
-    # Sets system time as the random seed
+    # Set system time as the random seed
     np.random.seed(seed=None)
 
-    # Set up window and how many frames image should be displayed depending on refresh rate of monitor
+    # Set up graphical components of experimental frame
     window = visual.Window(size=window_dims, color=bg_color, monitor='monitor', fullscr=full_screen)
 
     img = visual.ImageStim(window, size=img_dims)
@@ -126,6 +110,7 @@ def main():
 
     quadrants = [quadrant1, quadrant2, quadrant3, quadrant4]
 
+    # Display instructional imformation for user
     instruction_msg = visual.TextStim(window, color=text_color, text=f"You will be asked in which quadrant the building shown is damaged.\n\nChoose the quadrant with the mouse, and press the spacebar to move on.\n\nPress any key to continue.")
     instruction_msg.draw()
     window.flip()
@@ -141,11 +126,14 @@ def main():
         img_name = get_random_img(img_list)
         img.setImage(img_dir + img_name)
 
+        # Draw image and quadrants, wait for user response
         draw_quadrants(window, img, quadrants)
         start_time = time.time()
         response = get_response(mouse, quadrants, window, img)
         if response is None:
-            break
+            break               # Quit experiment early if escape key pressed
+
+        # Measure the user's reaction time
         end_time = time.time()
         response_time = end_time - start_time
 
