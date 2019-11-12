@@ -6,7 +6,7 @@ import pandas as pd
 from psychopy import visual, event, core, logging, gui
 
 # PARAMETERS / SETTINGS
-data_columns = ['Image', 'Response']
+data_columns = ['Image', 'Response', 'Time']
 
 # Graphical options
 window_dims = [600,600]                       # dimensions of window display (if not full-screen)
@@ -17,7 +17,7 @@ full_screen = True                            # whether to have display be full-
 
 # File paths
 img_dir = r"images/Damage/"                   # directory containing images to display
-output_filename = "response.csv"
+output_filename = "truth.csv"
 
 # UTILITY FUNCTIONS
 def get_imgs(img_dir):
@@ -51,59 +51,57 @@ def draw_quadrants(window, img, quadrants):
 
 def get_response(mouse, quadrants, window, img):
 
-    def select_quadrant(quadrants, quadrant_to_highlight, window, img):
+    def select_quadrant(quadrants, quadrants_selected, window, img):
         img.draw()
-        for quadrant in quadrants:
-            if quadrant != quadrant_to_highlight:
-                quadrant.lineColor = "red"
-                quadrant.draw()
 
-        quadrant_to_highlight.lineColor = "white"
-        quadrant_to_highlight.draw()
+        for q in quadrants:
+            q.lineColor = "red"
+            q.draw()
+        for qn in quadrants_selected:
+            quadrants[qn-1].lineColor = "blue"
+            quadrants[qn-1].draw()
+
         window.flip()
 
-    quad_pressed = None
+    quads_pressed = []
 
-    while quad_pressed is None or len(event.getKeys(keyList=['space'])) == 0:
+    while len(quads_pressed) == 0 or len(event.getKeys(keyList=['space'])) == 0:
 
         if len(event.getKeys(keyList=['escape'])) > 0:
             return None
 
         if mouse.isPressedIn(quadrants[0]):
             event.clearEvents()
-            if quad_pressed == 1:
-                draw_quadrants(window, img, quadrants)
-                quad_pressed = None
+            if 1 in quads_pressed:
+                quads_pressed.remove(1)
             else:
-                quad_pressed = 1
-                select_quadrant(quadrants, quadrants[0], window, img)
+                quads_pressed.append(1)
+            select_quadrant(quadrants, quads_pressed, window, img)
         elif mouse.isPressedIn(quadrants[1]):
             event.clearEvents()
-            if quad_pressed == 2:
-                draw_quadrants(window, img, quadrants)
-                quad_pressed = None
+            if 2 in quads_pressed:
+                quads_pressed.remove(2)
             else:
-                quad_pressed = 2
-                select_quadrant(quadrants, quadrants[1], window, img)
+                quads_pressed.append(2)
+            select_quadrant(quadrants, quads_pressed, window, img)
         elif mouse.isPressedIn(quadrants[2]):
             event.clearEvents()
-            if quad_pressed == 3:
-                draw_quadrants(window, img, quadrants)
-                quad_pressed = None
+            if 3 in quads_pressed:
+                quads_pressed.remove(3)
             else:
-                quad_pressed = 3
-                select_quadrant(quadrants, quadrants[2], window, img)
+                quads_pressed.append(3)
+            select_quadrant(quadrants, quads_pressed, window, img)
         elif mouse.isPressedIn(quadrants[3]):
             event.clearEvents()
-            if quad_pressed == 4:
-                draw_quadrants(window, img, quadrants)
-                quad_pressed = None
+            if 4 in quads_pressed:
+                quads_pressed.remove(4)
             else:
-                quad_pressed = 4
-                select_quadrant(quadrants, quadrants[3], window, img)
+                quads_pressed.append(4)
+            select_quadrant(quadrants, quads_pressed, window, img)
 
     event.clearEvents()
-    return quad_pressed
+    quads_pressed.sort()
+    return quads_pressed
 
 def main():
     img_list = get_imgs(img_dir)
@@ -139,11 +137,14 @@ def main():
         img.setImage(img_dir + img_name)
 
         draw_quadrants(window, img, quadrants)
+        start_time = time.time()
         response = get_response(mouse, quadrants, window, img)
         if response is None:
             break
+        end_time = time.time()
+        response_time = end_time - start_time
 
-        data.loc[len(data)] = ([img_name, response])
+        data.loc[len(data)] = ([img_name, response, format(response_time, '.3f')])
         data.to_csv(output_filename)
 
     instruction_msg.text = "Test is over. Press any key to close experiment window."
