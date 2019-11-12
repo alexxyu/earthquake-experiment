@@ -8,10 +8,10 @@ from psychopy import visual, event, core, logging, gui
 # PARAMETERS / SETTINGS
 '''
 Columns in the .csv file containing raw experiment data:
-Image - image filename shown
-Response - user key input to prompt ('y' for yes and 'n' for no)
-Actual - actual/expected answer to prompt
-Time - response time (in seconds) defined as time between image display and user response
+Image:          image filename shown
+Response:       user key input to prompt ('y' for yes and 'n' for no)
+Actual:         actual/expected answer to prompt
+Time:           response time (in seconds) defined as time between image display and user response
 '''
 data_columns = ['Image', 'Response', 'Actual', 'Time']
 
@@ -21,12 +21,11 @@ bg_color = "#827F7B"
 text_color = "white"
 img_dims = [1.0, 1.0]                         # how much image is resized onto window (set to None if full-window)
 full_screen = True                            # whether to have display be full-screen
-msg_display_time = 3.0                        # how long instructions/messages are displayed on screen
 
 # Experimental options
 key_list = ['z', 'n']                         # options for user response (first is the response for yes)
 time_to_show = 2                              # time for image to be displayed in seconds
-countdown_time = 0.200                        # countdown duration (from 3 to 1) in seconds
+#countdown_time = 1.5                          # countdown duration (from 3 to 1) in seconds
 
 # File paths
 img_dir = r"images/"                          # directory containing images to display
@@ -90,7 +89,7 @@ def main():
     instruction_msg = visual.TextStim(window, color=text_color, text=f"You will be asked whether the building shown is damaged.\n\nEach image will be shown briefly.\n\nPlease press {key_list[0]} for yes and {key_list[1]} for no.")
     instruction_msg.draw()
     window.flip()
-    core.wait(msg_display_time)
+    event.waitKeys()
 
     # countdown_msg = visual.TextStim(window, color=text_color, text=None)
     img = visual.ImageStim(window, size=img_dims)
@@ -141,12 +140,6 @@ def main():
 
         data.loc[len(data)] = ([img_name, answer, truth, reaction_time])
 
-    instruction_msg.text = "Test completed. Closing window..."
-    instruction_msg.draw()
-    window.flip()
-    core.wait(msg_display_time)
-    window.close()
-
     # Output individual participant data to .csv file
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
@@ -167,6 +160,12 @@ def main():
     with open(csv_filename, 'a') as file:
         file.write(f"{index},{id},{accuracy}")
         file.write("\n")
+
+    instruction_msg.text = "Test completed. Press any key to close experiment window."
+    instruction_msg.draw()
+    window.flip()
+    event.waitKeys()
+    window.close()
 
 if __name__ == "__main__":
     main()

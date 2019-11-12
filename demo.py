@@ -5,14 +5,18 @@ import numpy as np
 import pandas as pd
 from psychopy import visual, event, core, logging, gui, data, sound
 
+#TODO: add (column response * column ground truth) * 1 to data table
+#TODO: use QuestHandler instead of StairHandler
+#TODO: implement parallel staircases (randomly choose one for each trial and average threshold)
+
 # PARAMETERS / SETTINGS
 '''
 Columns in the .csv file containing raw experiment data:
-Image - image filename shown
-Response - user key input to prompt ('y' for yes and 'n' for no)
-Actual - actual/expected answer to prompt
-Pres Time - how long the image was shown
-Response Time - response time (in seconds) defined as time between image display and user response
+Image:          image filename shown
+Response:       user key input to prompt ('y' for yes and 'n' for no)
+Actual:         actual/expected answer to prompt
+Pres Time:      how long the image was shown
+Response Time:  response time (in seconds) defined as time between image display and user response
 '''
 data_columns = ['Image', 'Response', 'Actual', 'Pres Time', 'Response Time']
 
@@ -32,12 +36,12 @@ num_each = 20                                 # number of damaged buildings and 
 Staircase Procedure Handler
 The values described here determine how much each answer affects the next presentation time.
 
-startVal:       the time to begin at
+startVal:       the presentation time to begin at
 stepType:       how each step is added/subtracted ('lin' for linear, 'db' for decibel, 'log' for log)
-stepSizes:      the step size after each reversal
+stepSizes:      the step size after each reversal (e.g. 2nd step size after 1st reversal)
 nUp:            number of incorrect guesses before staircase level increases
 nDown:          number of correct guesses before staircase level decreases
-minVal:         lowest presentation time that can be reached
+minVal:         minimum presentation time that can be reached
 '''
 staircase = data.StairHandler(startVal = 3.0,
                         stepType = 'db', stepSizes = [4, 2, 1],
