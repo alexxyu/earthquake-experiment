@@ -6,24 +6,18 @@ import pandas as pd
 from psychopy import visual, event, core, logging, gui
 
 # PARAMETERS / SETTINGS
-'''
-Columns in the .csv file containing raw experiment data:
-Image:          image filename shown
-Response:       user key input to prompt ('y' for yes and 'n' for no)
-Actual:         actual/expected answer to prompt
-Time:           response time (in seconds) defined as time between image display and user response
-'''
-data_columns = ['Image', 'Response', 'Actual', 'Time']
+data_columns = ['Image', 'Response']
 
 # Graphical options
 window_dims = [600,600]                       # dimensions of window display (if not full-screen)
 bg_color = "#827F7B"
 text_color = "white"
 img_dims = [1.0, 1.0]                         # how much image is resized onto window (set to None if full-window)
-full_screen = False                            # whether to have display be full-screen
+full_screen = True                            # whether to have display be full-screen
 
 # File paths
 img_dir = r"images/Damage/"                   # directory containing images to display
+output_filename = "response.csv"
 
 # UTILITY FUNCTIONS
 def get_imgs(img_dir):
@@ -134,6 +128,8 @@ def main():
     window.flip()
     event.waitKeys()
 
+    data = pd.DataFrame(columns=data_columns)
+
     # Run through image list with participant
     mouse = event.Mouse()
     while len(img_list) > 0:
@@ -146,7 +142,9 @@ def main():
         response = get_response(mouse, quadrants, window, img)
         if response is None:
             break
-        print(f"Quadrant {response} picked.")
+
+        data.loc[len(data)] = ([img_name, response])
+        data.to_csv(output_filename)
 
     instruction_msg.text = "Test is over. Press any key to close experiment window."
     instruction_msg.draw()
