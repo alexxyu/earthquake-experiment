@@ -45,6 +45,7 @@ def draw_quadrants(window, img, quadrants):
 
     for quadrant in quadrants:
         quadrant.lineColor = "red"
+        quadrant.lineWidth = 1.0
         quadrant.draw()
 
     window.flip()
@@ -56,9 +57,11 @@ def get_response(mouse, quadrants, window, img):
 
         for q in quadrants:
             q.lineColor = "red"
+            q.lineWidth = 1.0
             q.draw()
         for qn in quadrants_selected:
             quadrants[qn-1].lineColor = "blue"
+            quadrants[qn-1].lineWidth = 4.0
             quadrants[qn-1].draw()
 
         window.flip()
@@ -98,6 +101,8 @@ def get_response(mouse, quadrants, window, img):
             else:
                 quads_pressed.append(4)
             select_quadrant(quadrants, quads_pressed, window, img)
+
+        core.wait(0.001)
 
     event.clearEvents()
     quads_pressed.sort()
