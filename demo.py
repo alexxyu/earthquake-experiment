@@ -25,7 +25,7 @@ window_dims = [600,600]                       # dimensions of window display (if
 bg_color = "#827F7B"
 text_color = "white"
 img_dims = [1.0, 1.0]                         # how much image is resized onto window (set to None if full-window)
-full_screen = False                           # whether to have display be full-screen
+full_screen = True                            # whether to have display be full-screen
 msg_display_time = 3.0                        # how long instructions/messages are displayed on screen
 
 # Experimental options
@@ -159,6 +159,8 @@ def main():
         avg += next(staircase)
     avg /= len(staircases)
     print(f"The experiment's presentation time will be {avg} seconds.")
+
+    user_data['Correct'] = (user_data['Actual']==user_data['Response']).astype(int)
 
     # Output individual participant data to .csv file
     if not os.path.exists(data_dir):
