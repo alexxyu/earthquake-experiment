@@ -146,8 +146,8 @@ def main():
         answer = 'y' if keypress[0] == key_list[0] else 'n'
         event.clearEvents()
         if answer == truth:
-            #beep = sound.Sound('A', secs=0.25)
-            #beep.play()
+            beep = sound.Sound('A', secs=0.25)
+            beep.play()
             staircase.addResponse(1)
         else:
             staircase.addResponse(0)
