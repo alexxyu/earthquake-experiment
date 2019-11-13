@@ -30,23 +30,6 @@ msg_display_time = 3.0                        # how long instructions/messages a
 
 # Experimental options
 key_list = ['z', 'n']                         # options for user response (first is the response for yes)
-num_each = 25                                 # number of damaged buildings and undamaged buildings to show
-
-'''
-Staircase Procedure Handler
-The values described here determine how much each answer affects the next presentation time.
-
-startVal:       the presentation time to begin at
-stepType:       how each step is added/subtracted ('lin' for linear, 'db' for decibel, 'log' for log)
-stepSizes:      the step size after each reversal (e.g. 2nd step size after 1st reversal)
-nUp:            number of incorrect guesses before staircase level increases
-nDown:          number of correct guesses before staircase level decreases
-minVal:         minimum presentation time that can be reached
-'''
-staircase = data.QuestHandler(startVal = 2.0, startValSd = 1.5, 
-                        pThreshold = 0.75, nTrials = 50, 
-                        stopInterval = 0.05, beta = 3.5, delta = 0.01,
-                        gamma = 0.05, minVal = 0.2, maxVal = 5)
 
 # File paths
 img_dir = r"images/"                          # directory containing images to display
@@ -82,9 +65,6 @@ def get_frames_to_show(time_to_show, frame_rate):
 
 # MAIN ROUTINE
 def main():
-    img_list = get_imgs(img_dir, num_each, damage_subdir, nodamage_subdir)
-    print(f"{len(img_list)} images loaded.")
-
     # Sets system time as the random seed
     np.random.seed(seed=None)
 
@@ -112,20 +92,27 @@ def main():
     event.waitKeys()
 
     img = visual.ImageStim(window, size=img_dims)
-    data = pd.DataFrame(columns=data_columns)
+    user_data = pd.DataFrame(columns=data_columns)
 
-    '''
-    a = []
-    with open('demo_params.csv') as f:
-        a = [{k: int(v) for k, v in row.items()} for row in csv.DictReader(f, skipinitialspace=True)]
-    '''
+    conds = data.importConditions('demo_params.csv')
+    staircases = []
+    num_each = 0
+    for cond in conds:
+        staircases.append(data.QuestHandler(startVal=cond['startVal'], startValSd=cond['startValSd'], 
+                                        pThreshold=cond['pThreshold'], nTrials=cond['nTrials'],
+                                        stopInterval=cond['stopInterval'], beta=cond['beta'],
+                                        delta=cond['delta'], gamma=cond['gamma'], minVal=cond['minVal'],
+                                        maxVal=cond['maxVal']))
+        num_each = max(num_each, cond['nTrials']//2)
+
+    img_list = get_imgs(img_dir, num_each, damage_subdir, nodamage_subdir)
+    print(f"{len(img_list)} images loaded.")
 
     # Run through image list with participant
-    last_time = 0
-    for curr_time in staircase:
+    while len(img_list) > 0:
 
-        if len(img_list) == 0:
-            break
+        staircase = random.choice(staircases)
+        curr_time = next(staircase)
 
         curr_time = float(format(curr_time, '.3f'))
         print(f"Will display image for {curr_time} seconds.")
@@ -165,15 +152,18 @@ def main():
         else:
             staircase.addResponse(0)
 
-        data.loc[len(data)] = ([img_name, answer, truth, curr_time, reaction_time])
-        last_time = curr_time
+        user_data.loc[len(user_data)] = ([img_name, answer, truth, curr_time, reaction_time])
 
-    print(f"The experiment's presentation time will be {last_time} seconds.")
+    avg = 0
+    for staircase in staircases:
+        avg += next(staircase)
+    avg /= len(staircases)
+    print(f"The experiment's presentation time will be {avg} seconds.")
 
     # Output individual participant data to .csv file
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
-    data.to_csv(f"{data_dir}/data_{id}.csv")
+    user_data.to_csv(f"{data_dir}/data_{id}.csv")
 
     instruction_msg.text = "Test completed. Closing window..."
     instruction_msg.draw()
