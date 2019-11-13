@@ -1,13 +1,13 @@
 import os
+import csv
 import time
 import random
 import numpy as np
 import pandas as pd
 from psychopy import visual, event, core, logging, gui, data, sound
 
-#TODO: add (column response * column ground truth) * 1 to data table
 #TODO: use QuestHandler instead of StairHandler
-#TODO: implement parallel staircases (randomly choose one for each trial and average threshold)
+#TODO: implement parallel staircases (MultiStairHandler)
 
 # PARAMETERS / SETTINGS
 '''
@@ -25,12 +25,12 @@ window_dims = [600,600]                       # dimensions of window display (if
 bg_color = "#827F7B"
 text_color = "white"
 img_dims = [1.0, 1.0]                         # how much image is resized onto window (set to None if full-window)
-full_screen = True                            # whether to have display be full-screen
+full_screen = False                           # whether to have display be full-screen
 msg_display_time = 3.0                        # how long instructions/messages are displayed on screen
 
 # Experimental options
 key_list = ['z', 'n']                         # options for user response (first is the response for yes)
-num_each = 20                                 # number of damaged buildings and undamaged buildings to show
+num_each = 25                                 # number of damaged buildings and undamaged buildings to show
 
 '''
 Staircase Procedure Handler
@@ -43,10 +43,10 @@ nUp:            number of incorrect guesses before staircase level increases
 nDown:          number of correct guesses before staircase level decreases
 minVal:         minimum presentation time that can be reached
 '''
-staircase = data.StairHandler(startVal = 3.0,
-                        stepType = 'db', stepSizes = [4, 2, 1],
-                        nUp = 2, nDown = 2, minVal = 0.200, 
-                        nTrials = num_each * 2)
+staircase = data.QuestHandler(startVal = 2.0, startValSd = 1.5, 
+                        pThreshold = 0.75, nTrials = 50, 
+                        stopInterval = 0.05, beta = 3.5, delta = 0.01,
+                        gamma = 0.05, minVal = 0.2, maxVal = 5)
 
 # File paths
 img_dir = r"images/"                          # directory containing images to display
@@ -114,6 +114,12 @@ def main():
     img = visual.ImageStim(window, size=img_dims)
     data = pd.DataFrame(columns=data_columns)
 
+    '''
+    a = []
+    with open('demo_params.csv') as f:
+        a = [{k: int(v) for k, v in row.items()} for row in csv.DictReader(f, skipinitialspace=True)]
+    '''
+
     # Run through image list with participant
     last_time = 0
     for curr_time in staircase:
@@ -153,8 +159,8 @@ def main():
         answer = 'y' if keypress[0] == key_list[0] else 'n'
         event.clearEvents()
         if answer == truth:
-            beep = sound.Sound('A', secs=0.25)
-            beep.play()
+            #beep = sound.Sound('A', secs=0.25)
+            #beep.play()
             staircase.addResponse(1)
         else:
             staircase.addResponse(0)
