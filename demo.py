@@ -6,9 +6,6 @@ import numpy as np
 import pandas as pd
 from psychopy import visual, event, core, logging, gui, data, sound
 
-#TODO: use QuestHandler instead of StairHandler
-#TODO: implement parallel staircases (MultiStairHandler)
-
 # PARAMETERS / SETTINGS
 '''
 Columns in the .csv file containing raw experiment data:
@@ -30,6 +27,7 @@ msg_display_time = 3.0                        # how long instructions/messages a
 
 # Experimental options
 key_list = ['z', 'n']                         # options for user response (first is the response for yes)
+num_each = 200
 
 # File paths
 img_dir = r"images/"                          # directory containing images to display
@@ -38,7 +36,7 @@ nodamage_subdir = "NoDamage"                  # subdirectory name to images of u
 data_dir = r"demo_data"                       # directory to data output path
 
 # UTILITY FUNCTIONS
-def get_imgs(img_dir, num_each, damage_subdir, nodamage_subdir):
+def get_imgs(img_dir, damage_subdir, num_each, nodamage_subdir):
     imgs_list = []
 
     all_damage_imgs = [f"{damage_subdir}/" + f for f in os.listdir(img_dir + damage_subdir)]
@@ -96,17 +94,17 @@ def main():
 
     conds = data.importConditions('demo_params.csv')
     staircases = []
-    num_each = 0
     for cond in conds:
         staircases.append(data.QuestHandler(startVal=cond['startVal'], startValSd=cond['startValSd'], 
                                         pThreshold=cond['pThreshold'], nTrials=cond['nTrials'],
                                         stopInterval=cond['stopInterval'], beta=cond['beta'],
                                         delta=cond['delta'], gamma=cond['gamma'], minVal=cond['minVal'],
                                         maxVal=cond['maxVal']))
-        num_each = max(num_each, cond['nTrials']//2)
 
-    img_list = get_imgs(img_dir, num_each, damage_subdir, nodamage_subdir)
+    img_list = get_imgs(img_dir, damage_subdir, num_each, nodamage_subdir)
     print(f"{len(img_list)} images loaded.")
+
+    key_list.append('escape')
 
     # Run through image list with participant
     while len(img_list) > 0:
@@ -131,6 +129,13 @@ def main():
             window.flip()
 
             keypress = event.getKeys(keyList=key_list)
+            if 'escape' in keypress:
+                instruction_msg.text = 'Experiment aborted. Quitting...'
+                instruction_msg.draw()
+                window.flip()
+                core.wait(3.0)
+                window.close()
+                return 0
             if len(keypress) > 0:
                 end_time = time.time()
                 break
@@ -140,6 +145,13 @@ def main():
         # Track reaction time for user response
         if keypress is None or len(keypress) == 0:
             keypress = event.waitKeys(keyList=key_list)
+            if 'escape' in keypress:
+                instruction_msg.text = 'Experiment aborted. Quitting...'
+                instruction_msg.draw()
+                window.flip()
+                core.wait(3.0)
+                window.close()
+                return 0
             end_time = time.time()
         reaction_time = float(format(end_time - start_time, '.3f'))
         
@@ -158,7 +170,8 @@ def main():
     for staircase in staircases:
         avg += next(staircase)
     avg /= len(staircases)
-    print(f"The experiment's presentation time will be {avg} seconds.")
+    with open('demo_result.txt', 'a') as f:
+        f.write(f"The experiment's presentation time will be {avg} seconds.\n")
 
     user_data['Correct'] = (user_data['Actual']==user_data['Response']).astype(int)
 
