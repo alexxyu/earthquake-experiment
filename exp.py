@@ -59,12 +59,6 @@ def get_random_img(img_list):
 
 # EXPERIMENTAL ROUTINE
 
-def demo():
-    return 0
-
-def main_test():
-    return 0
-
 def main():
     img_list = get_imgs(img_dir, damage_subdir, nodamage_subdir)
     print(f"{len(img_list)} images loaded.")
@@ -91,22 +85,13 @@ def main():
     window.flip()
     event.waitKeys()
 
-    # countdown_msg = visual.TextStim(window, color=text_color, text=None)
     img = visual.ImageStim(window, size=img_dims)
-
     data = pd.DataFrame(columns=data_columns)
+
+    key_list.append('escape')
 
     # Run through image list with participant
     while len(img_list) > 0:
-
-        '''
-        # Show countdown from 3 to 1 to image display
-        for n in range(3, 0, -1):
-            countdown_msg.text = f"{n}"
-            countdown_msg.draw()
-            window.flip()
-            core.wait(countdown_time / 3)
-        '''
 
         # Get and parse random image's information
         subdir, img_name = get_random_img(img_list)
@@ -121,16 +106,30 @@ def main():
             window.flip()
 
             keypress = event.getKeys(keyList=key_list)
+
+            if 'escape' in keypress:
+                instruction_msg.text = 'Experiment aborted. Quitting...'
+                instruction_msg.draw()
+                window.flip()
+                core.wait(3.0)
+                window.close()
+                return 0
             if len(keypress) > 0:
                 break
 
-        #instruction_msg.draw()
         window.flip()
 
         # Track reaction time for user response
         if keypress is None or len(keypress) == 0:
             keypress = event.waitKeys(keyList=key_list)
-
+            if 'escape' in keypress:
+                instruction_msg.text = 'Experiment aborted. Quitting...'
+                instruction_msg.draw()
+                window.flip()
+                core.wait(3.0)
+                window.close()
+                return 0
+            
         end_time = time.time()
 
         reaction_time = float(format(end_time - start_time, '.3f'))
