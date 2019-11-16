@@ -22,10 +22,9 @@ bg_color = "#827F7B"
 text_color = "white"
 img_dims = [1.0, 1.0]                         # how much image is resized onto window (set to None if full-window)
 full_screen = True                            # whether to have display be full-screen
-msg_display_time = 3.0                        # how long instructions/messages are displayed on screen
 
 # Experimental options
-key_list = ['z', 'n']                         # options for user response (first is the response for yes)
+key_list = ['z', 'n']                         # yes/no keypress options for user response
 num_each = 200                                # how many of each type of image (damaged and undamaged)
 feedback_rounds = 20                          # number of rounds to provide feedback
 
@@ -61,37 +60,44 @@ def get_random_img(img_list):
 def get_frames_to_show(time_to_show, frame_rate):
     return (int) (round(time_to_show * frame_rate))
 
-# MAIN ROUTINE
-def main():
-    # Sets system time as the random seed
-    np.random.seed(seed=None)
-
-    # Prompt GUI for participant ID
+def ask_for_id():
     dlg = gui.Dlg(title="Enter participant ID:")
     dlg.addField('Participant ID:')
     id = dlg.show()
     if not dlg.OK:
         print('Program aborted.')
         exit()
-    id = id[0]
+    return id[0]
+
+# MAIN ROUTINE
+def main():
+    # Sets system time as the random seed
+    np.random.seed(seed=None)
+
+    # Prompt GUI for participant ID
+    id = ask_for_id()
 
     # Set up window and how many frames image should be displayed depending on refresh rate of monitor
     window = visual.Window(color=bg_color, monitor='monitor', fullscr=full_screen)
     frame_rate = window.getActualFrameRate()
 
-    instruction_msg = visual.TextStim(window, color=text_color, text=f"You will be asked whether the building shown is damaged. Each image will be shown briefly.\n\nPlease press {key_list[0]} for yes and {key_list[1]} for no.\n\nPress any key to continue.")
+    # Display instructional messages for user
+    instruction_msg = visual.TextStim(window, color=text_color, text=f"For each image, answer whether the building shown is damaged. Each image will be shown briefly.\n\nTo answer, please press {key_list[0]} for yes and {key_list[1]} for no.\n\nPress any key to continue.")
+    instruction_msg.draw()
+    window.flip()
+    event.waitKeys()
+    instruction_msg.text = f"For the first few images, you will hear a beep if you give the correct answer.\n\nPress any key to continue."
     instruction_msg.draw()
     window.flip()
     event.waitKeys()
 
-    instruction_msg.text = f"We will start with a demo experiment in which the images will be shown for different amounts of time depending on your accuracy.\n\nYou will hear a beep if you are correct.\n\nPress any key to continue."
-    instruction_msg.draw()
-    window.flip()
-    event.waitKeys()
+    plus_horiz = visual.ShapeStim(window, units='pix', vertices=[[-20, 0], [20, 0]])
+    plus_vert = visual.ShapeStim(window, units='pix', vertices=[[0, 20], [0, -20]])
 
-    img = visual.ImageStim(window, size=img_dims)
     user_data = pd.DataFrame(columns=data_columns)
+    img = visual.ImageStim(window, size=img_dims)
 
+    # Setup staircase procedures using defined parameters
     conds = data.importConditions('demo_params.csv')
     staircases = []
     for cond in conds:
@@ -111,9 +117,7 @@ def main():
 
         staircase = random.choice(staircases)
         curr_time = next(staircase)
-
         curr_time = float(format(curr_time, '.3f'))
-        print(f"Will display image for {curr_time} seconds.")
 
         # Get and parse random image's information
         subdir, img_name = get_random_img(img_list)
@@ -139,6 +143,8 @@ def main():
                 end_time = time.time()
                 break
 
+        plus_horiz.draw()
+        plus_vert.draw()
         window.flip()
 
         # Track reaction time for user response
@@ -153,6 +159,7 @@ def main():
             end_time = time.time()
         reaction_time = float(format(end_time - start_time, '.3f'))
         
+        # Log and process user's input as correct or incorrect
         answer = 'y' if keypress[0] == key_list[0] else 'n'
         event.clearEvents()
         if answer == truth:
@@ -172,12 +179,13 @@ def main():
             window.flip()
             core.wait(3.0)        
 
+    # Calculate the final presentation time from the average of the staircases
     avg = 0
     for staircase in staircases:
         avg += next(staircase)
     avg /= len(staircases)
     with open('demo_result.txt', 'w') as f:
-        f.write(f"The experiment's presentation time will be {avg} seconds.\n")
+        f.write(f"The final presentation time is {avg} seconds.\n")
 
     user_data['Correct'] = (user_data['Actual']==user_data['Response']).astype(int)
 
