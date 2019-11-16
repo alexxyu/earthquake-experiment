@@ -166,5 +166,7 @@ def main():
     event.waitKeys()
     window.close()
 
+    return 0
+
 if __name__ == "__main__":
     main()

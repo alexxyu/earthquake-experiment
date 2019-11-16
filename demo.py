@@ -97,9 +97,8 @@ def main():
     for cond in conds:
         staircases.append(data.QuestHandler(startVal=cond['startVal'], startValSd=cond['startValSd'], 
                                         pThreshold=cond['pThreshold'], nTrials=cond['nTrials'],
-                                        stopInterval=cond['stopInterval'], beta=cond['beta'],
-                                        delta=cond['delta'], gamma=cond['gamma'], minVal=cond['minVal'],
-                                        maxVal=cond['maxVal']))
+                                        beta=cond['beta'], delta=cond['delta'], gamma=cond['gamma'], 
+                                        minVal=cond['minVal'], maxVal=cond['maxVal']))
 
     img_list = get_imgs(img_dir, damage_subdir, num_each, nodamage_subdir)
     print(f"{len(img_list)} images loaded.")
@@ -177,7 +176,7 @@ def main():
     for staircase in staircases:
         avg += next(staircase)
     avg /= len(staircases)
-    with open('demo_result.txt', 'a') as f:
+    with open('demo_result.txt', 'w') as f:
         f.write(f"The experiment's presentation time will be {avg} seconds.\n")
 
     user_data['Correct'] = (user_data['Actual']==user_data['Response']).astype(int)
