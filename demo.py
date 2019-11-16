@@ -4,7 +4,7 @@ import time
 import random
 import numpy as np
 import pandas as pd
-from psychopy import visual, event, core, logging, gui, data, sound
+from psychopy import core, visual, data, event, gui, sound
 
 # PARAMETERS / SETTINGS
 '''
@@ -18,7 +18,6 @@ Response Time:  response time (in seconds) defined as time between image display
 data_columns = ['Image', 'Response', 'Actual', 'Pres Time', 'Response Time']
 
 # Graphical options
-window_dims = [600,600]                       # dimensions of window display (if not full-screen)
 bg_color = "#827F7B"
 text_color = "white"
 img_dims = [1.0, 1.0]                         # how much image is resized onto window (set to None if full-window)
@@ -27,7 +26,8 @@ msg_display_time = 3.0                        # how long instructions/messages a
 
 # Experimental options
 key_list = ['z', 'n']                         # options for user response (first is the response for yes)
-num_each = 200
+num_each = 200                                # how many of each type of image (damaged and undamaged)
+feedback_rounds = 20                          # number of rounds to provide feedback
 
 # File paths
 img_dir = r"images/"                          # directory containing images to display
@@ -76,7 +76,7 @@ def main():
     id = id[0]
 
     # Set up window and how many frames image should be displayed depending on refresh rate of monitor
-    window = visual.Window(size=window_dims, color=bg_color, monitor='monitor', fullscr=full_screen)
+    window = visual.Window(color=bg_color, monitor='monitor', fullscr=full_screen)
     frame_rate = window.getActualFrameRate()
 
     instruction_msg = visual.TextStim(window, color=text_color, text=f"You will be asked whether the building shown is damaged. Each image will be shown briefly.\n\nPlease press {key_list[0]} for yes and {key_list[1]} for no.\n\nPress any key to continue.")
@@ -107,6 +107,7 @@ def main():
     key_list.append('escape')
 
     # Run through image list with participant
+    rounds = 1
     while len(img_list) > 0:
 
         staircase = random.choice(staircases)
@@ -134,8 +135,7 @@ def main():
                 instruction_msg.draw()
                 window.flip()
                 core.wait(3.0)
-                window.close()
-                return 0
+                core.quit()
             if len(keypress) > 0:
                 end_time = time.time()
                 break
@@ -150,21 +150,28 @@ def main():
                 instruction_msg.draw()
                 window.flip()
                 core.wait(3.0)
-                window.close()
-                return 0
+                core.quit()
             end_time = time.time()
         reaction_time = float(format(end_time - start_time, '.3f'))
         
         answer = 'y' if keypress[0] == key_list[0] else 'n'
         event.clearEvents()
         if answer == truth:
-            beep = sound.Sound('A', secs=0.25)
-            beep.play()
+            if rounds <= feedback_rounds:
+                beep = sound.Sound('A', secs=0.25)
+                beep.play()
             staircase.addResponse(1)
         else:
             staircase.addResponse(0)
 
-        user_data.loc[len(user_data)] = ([img_name, answer, truth, curr_time, reaction_time])
+        user_data.loc[len(user_data)] = ([img_name, answer, truth, curr_time, reaction_time])    
+        rounds += 1
+
+        if rounds == feedback_rounds + 1:
+            instruction_msg.text = 'From now on, feedback will no longer be provided.'
+            instruction_msg.draw()
+            window.flip()
+            core.wait(3.0)        
 
     avg = 0
     for staircase in staircases:
@@ -184,7 +191,8 @@ def main():
     instruction_msg.draw()
     window.flip()
     core.wait(3.0)
-    window.close()
+
+    core.quit()
 
 if __name__ == "__main__":
     main()
