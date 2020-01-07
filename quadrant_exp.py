@@ -150,7 +150,7 @@ def main():
 
     # Run through image list with participant
     mouse = event.Mouse()
-    while len(img_list) > 190:
+    while len(img_list) > 0:
 
         # Get and parse random image's information
         img_name = get_random_img(img_list)
