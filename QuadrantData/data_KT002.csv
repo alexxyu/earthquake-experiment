@@ -1,0 +1,201 @@
+,Image,Response,Time,Q1 Label,Q2 Label,Q3 Label,Q4 Label
+0,HBG2.JPG,"[1, 2, 3]",8.837,False alarm,False alarm,Hit,Correct rejection
+1,HBG174.JPG,"[1, 2, 3, 4]",3.221,Hit,Hit,Hit,Hit
+2,HBY127.JPG,"[1, 2, 3]",5.131,Hit,Hit,Hit,Correct rejection
+3,HBG275.JPG,"[1, 2]",7.527,Hit,False alarm,Correct rejection,Correct rejection
+4,HBY23.JPG,"[1, 4]",3.421,Hit,Correct rejection,Correct rejection,Hit
+5,HBY173.JPG,"[1, 2, 3, 4]",5.928,Hit,Hit,Hit,Hit
+6,HBG216.JPG,"[1, 4]",4.114,Hit,Miss,Miss,Hit
+7,HBG393.JPG,"[2, 3, 4]",3.118,Miss,Hit,False alarm,Hit
+8,HBG178.JPG,"[1, 2, 3]",3.921,False alarm,Hit,Hit,Correct rejection
+9,HBY27.JPG,"[1, 4]",5.125,Hit,Correct rejection,Correct rejection,Hit
+10,HBR25.JPG,[4],9.718,Miss,Miss,Correct rejection,False alarm
+11,HBY35.JPG,"[1, 2, 3, 4]",3.222,Hit,Hit,Hit,False alarm
+12,HBG420.JPG,"[3, 4]",2.912,Correct rejection,Correct rejection,Hit,Hit
+13,HBY33.JPG,"[3, 4]",1.612,Correct rejection,Correct rejection,Hit,Hit
+14,HBY170.JPG,"[1, 2]",1.509,Hit,Hit,Correct rejection,Correct rejection
+15,HBY17.JPG,"[2, 3]",2.311,Correct rejection,Hit,Hit,Correct rejection
+16,HBG5.JPG,"[1, 2, 3]",4.318,False alarm,Hit,False alarm,Correct rejection
+17,HBY167.JPG,"[1, 2, 3, 4]",5.324,Hit,Hit,Hit,False alarm
+18,HBG483.JPG,[3],3.408,Correct rejection,Correct rejection,Hit,Correct rejection
+19,HBG53.JPG,"[3, 4]",3.613,Miss,Correct rejection,False alarm,Hit
+20,HBG66.JPG,"[2, 3, 4]",2.916,Correct rejection,Hit,Hit,Hit
+21,HBR13.JPG,"[1, 2, 3, 4]",3.223,Hit,Hit,Hit,Hit
+22,HBR2.JPG,"[1, 2, 3]",4.043,Hit,Hit,Hit,Correct rejection
+23,HBY100.JPG,"[2, 3]",5.526,Correct rejection,False alarm,Hit,Miss
+24,HBG425.JPG,"[1, 3, 4]",4.218,Hit,Miss,False alarm,False alarm
+25,HBY34.JPG,"[1, 2, 3]",3.518,Hit,Hit,Hit,Correct rejection
+26,HBY108.JPG,[1],5.119,Hit,Correct rejection,Correct rejection,Miss
+27,HBR22.JPG,"[2, 3]",2.412,Correct rejection,Hit,Hit,Correct rejection
+28,HBY147.JPG,"[1, 2, 4]",3.316,Hit,Hit,Correct rejection,Hit
+29,HBR30.JPG,"[2, 3]",3.113,Correct rejection,Hit,Hit,Correct rejection
+30,HBG442.JPG,"[2, 3, 4]",6.319,Miss,False alarm,Hit,False alarm
+31,HBG44.JPG,"[1, 4]",2.412,Hit,Correct rejection,Correct rejection,Hit
+32,HBR33.JPG,"[3, 4]",3.414,Correct rejection,Correct rejection,Hit,Hit
+33,HBG106.JPG,"[2, 3]",5.717,Miss,Hit,Hit,Correct rejection
+34,HBY1.JPG,"[2, 3]",5.116,Miss,Hit,Hit,Miss
+35,HBY111.JPG,"[1, 2, 3, 4]",3.222,Hit,Hit,Hit,Hit
+36,HBY3.JPG,[2],1.106,Correct rejection,Hit,Correct rejection,Correct rejection
+37,HBY133.JPG,[2],1.906,Miss,Hit,Correct rejection,Correct rejection
+38,HBR31.JPG,"[2, 3, 4]",2.717,Correct rejection,False alarm,False alarm,Hit
+39,HBY84.JPG,"[1, 2, 4]",4.820,Hit,Hit,Correct rejection,False alarm
+40,HBG187.JPG,"[1, 4]",4.723,False alarm,Correct rejection,Correct rejection,Hit
+41,HBG215.JPG,"[1, 3]",5.116,False alarm,Miss,Hit,Correct rejection
+42,HBG74.JPG,"[2, 3, 4]",4.319,Miss,Hit,False alarm,False alarm
+43,HBY159.JPG,"[1, 2, 3, 4]",3.920,Hit,Hit,Hit,Hit
+44,HBG502.JPG,"[1, 2, 3]",2.816,Hit,Hit,Hit,Correct rejection
+45,HBG197.JPG,[2],3.910,Correct rejection,Hit,Correct rejection,Correct rejection
+46,HBY151.JPG,"[2, 3, 4]",3.915,Miss,Hit,Hit,Hit
+47,HBG378.JPG,"[2, 3, 4]",3.616,Miss,False alarm,Hit,Hit
+48,HBG484.JPG,"[2, 3]",3.413,Correct rejection,Hit,Hit,Correct rejection
+49,HBG169.JPG,"[1, 2]",2.413,Hit,Hit,Correct rejection,Correct rejection
+50,HBY95.JPG,[1],4.509,Hit,Miss,Correct rejection,Correct rejection
+51,HBY64.JPG,"[2, 3, 4]",3.019,Miss,Hit,Hit,Hit
+52,HBY134.JPG,[2],7.629,Miss,Hit,Miss,Correct rejection
+53,HBR1.JPG,[3],6.131,Miss,Correct rejection,False alarm,Correct rejection
+54,HBY144.JPG,"[2, 4]",2.310,Correct rejection,Hit,Miss,Hit
+55,HBR10.JPG,"[2, 4]",4.416,Miss,Hit,Correct rejection,Hit
+56,HBR37.JPG,[2],2.306,Correct rejection,Hit,Correct rejection,Correct rejection
+57,HBY160.JPG,"[3, 4]",3.012,Miss,Miss,Hit,Hit
+58,HBY149.JPG,[3],3.609,Miss,Correct rejection,Hit,Miss
+59,HBY156.JPG,[4],4.217,Correct rejection,Correct rejection,Correct rejection,Hit
+60,HBG96.JPG,"[2, 3]",2.212,Miss,Hit,Hit,Correct rejection
+61,HBY91.JPG,"[1, 2, 3]",3.917,Hit,Hit,Hit,Miss
+62,HBY131.JPG,"[1, 2, 4]",3.916,Hit,False alarm,Correct rejection,Hit
+63,HBG8.JPG,"[1, 2, 4]",4.018,Hit,Hit,Correct rejection,Hit
+64,HBG23.JPG,"[2, 3, 4]",3.818,Correct rejection,False alarm,Hit,Hit
+65,HBY20.JPG,"[1, 2, 3, 4]",4.225,Hit,Hit,Hit,Hit
+66,HBG68.JPG,"[1, 2, 3]",2.917,False alarm,False alarm,Hit,Miss
+67,HBY103.JPG,"[1, 2, 3, 4]",4.525,False alarm,False alarm,Hit,Hit
+68,HBR46.JPG,"[3, 4]",2.209,Miss,Miss,Hit,Hit
+69,HBY47.JPG,"[1, 2, 3, 4]",3.424,Hit,Hit,Hit,Hit
+70,HBR38.JPG,"[1, 4]",1.710,Hit,Correct rejection,Miss,Hit
+71,HBY55.JPG,"[1, 2]",3.114,False alarm,Hit,Miss,Correct rejection
+72,HBY78.JPG,"[1, 2, 3, 4]",3.621,Hit,Hit,Hit,Hit
+73,HBY56.JPG,[3],4.520,Miss,Miss,False alarm,Correct rejection
+74,HBY175.JPG,"[3, 4]",5.627,Miss,Miss,Hit,False alarm
+75,HBG488.JPG,"[2, 3, 4]",3.716,Miss,Hit,Hit,Hit
+76,HBR32.JPG,[2],2.608,Miss,Hit,Correct rejection,Correct rejection
+77,HBG200.JPG,[2],1.907,Miss,Hit,Correct rejection,Correct rejection
+78,HBG55.JPG,"[2, 3, 4]",2.419,Miss,Hit,Hit,Hit
+79,HBG94.JPG,"[2, 3, 4]",2.917,Correct rejection,False alarm,Hit,Hit
+80,HBG28.JPG,"[1, 2]",2.712,Hit,Hit,Correct rejection,Correct rejection
+81,HBY29.JPG,"[2, 3, 4]",2.017,Miss,Hit,False alarm,False alarm
+82,HBG39.JPG,[4],4.410,Miss,Correct rejection,Correct rejection,Hit
+83,HBY31.JPG,"[1, 3]",3.012,Hit,Correct rejection,Hit,Correct rejection
+84,HBG507.JPG,"[1, 2, 3]",2.913,Hit,Hit,Hit,Correct rejection
+85,HBY69.JPG,"[1, 2, 3, 4]",4.224,Hit,Hit,Hit,Hit
+86,HBR15.JPG,[2],3.910,Correct rejection,Hit,Miss,Correct rejection
+87,HBG328.JPG,"[1, 2]",5.113,False alarm,False alarm,Miss,Miss
+88,HBG509.JPG,"[1, 2]",3.311,False alarm,False alarm,Miss,Miss
+89,HBR19.JPG,"[3, 4]",1.812,Correct rejection,Correct rejection,Hit,Hit
+90,HBR26.JPG,"[2, 3]",4.215,Correct rejection,Hit,False alarm,Correct rejection
+91,HBY48.JPG,"[1, 2]",2.422,Hit,Hit,Correct rejection,Correct rejection
+92,HBY30.JPG,"[1, 2]",1.610,Hit,Hit,Correct rejection,Correct rejection
+93,HBG133.JPG,[4],4.711,Correct rejection,Miss,Correct rejection,False alarm
+94,HBG195.JPG,"[1, 4]",4.815,False alarm,Miss,Miss,False alarm
+95,HBG33.JPG,"[1, 2]",3.613,Hit,Hit,Miss,Correct rejection
+96,HBY13.JPG,"[1, 2, 3, 4]",3.124,Hit,Hit,Hit,Hit
+97,HBG436.JPG,"[1, 3, 4]",3.518,Hit,Correct rejection,Hit,Hit
+98,HBG175.JPG,"[2, 3]",1.612,Correct rejection,Hit,Hit,Correct rejection
+99,HBY60.JPG,"[1, 2]",1.611,Hit,Hit,Correct rejection,Correct rejection
+100,HBG447.JPG,"[1, 3, 4]",2.514,Hit,Correct rejection,Hit,Hit
+101,HBY161.JPG,"[1, 2, 3, 4]",4.822,Hit,Hit,Hit,Hit
+102,HBG448.JPG,"[1, 2, 3]",2.622,Hit,Hit,Hit,Correct rejection
+103,HBR5.JPG,"[1, 2, 3]",2.214,Hit,Hit,Hit,Miss
+104,HBG372.JPG,"[1, 2, 3]",4.016,False alarm,False alarm,Hit,Miss
+105,HBY139.JPG,[1],3.515,Hit,Correct rejection,Correct rejection,Correct rejection
+106,HBG380.JPG,"[3, 4]",2.511,Correct rejection,Correct rejection,Hit,Hit
+107,HBY58.JPG,"[2, 3]",5.824,Miss,Hit,False alarm,Correct rejection
+108,HBY96.JPG,"[1, 2, 3]",4.519,Hit,Hit,False alarm,Correct rejection
+109,HBY85.JPG,"[1, 2, 3]",3.717,Hit,Hit,False alarm,Correct rejection
+110,HBY43.JPG,"[1, 2, 3, 4]",4.427,Hit,Hit,False alarm,Hit
+111,HBG93.JPG,"[2, 3]",3.013,Correct rejection,Hit,Hit,Correct rejection
+112,HBY11.JPG,"[1, 2, 3]",2.919,False alarm,Hit,Hit,Correct rejection
+113,HBY163.JPG,"[1, 2, 3, 4]",3.722,Hit,Hit,Hit,Hit
+114,HBR27.JPG,"[1, 2, 3, 4]",3.521,Hit,Hit,Hit,Hit
+115,HBY115.JPG,"[1, 2, 4]",5.235,Hit,False alarm,Correct rejection,Hit
+116,HBG19.JPG,"[1, 2, 4]",2.617,Hit,Hit,Correct rejection,False alarm
+117,HBG510.JPG,"[1, 2]",2.609,Hit,Hit,Correct rejection,Correct rejection
+118,HBY57.JPG,[4],5.612,Miss,Miss,Miss,Hit
+119,HBY153.JPG,"[3, 4]",3.612,Correct rejection,Correct rejection,Hit,Hit
+120,HBG394.JPG,"[1, 2]",2.912,Hit,Hit,Correct rejection,Correct rejection
+121,HBG104.JPG,"[3, 4]",3.013,Miss,Correct rejection,False alarm,Hit
+122,HBY168.JPG,[4],1.406,Miss,Correct rejection,Correct rejection,Hit
+123,HBY25.JPG,"[1, 2, 3, 4]",3.618,Hit,Hit,Hit,Hit
+124,HBY99.JPG,"[1, 2, 4]",4.017,Hit,Hit,Correct rejection,False alarm
+125,HBR23.JPG,"[1, 2, 3]",4.219,False alarm,Hit,Hit,Correct rejection
+126,HBR18.JPG,"[1, 2, 3]",6.421,Hit,Hit,Hit,Correct rejection
+127,HBG10.JPG,"[1, 2, 3]",4.620,Hit,Hit,False alarm,Correct rejection
+128,HBY122.JPG,"[1, 2, 3]",4.016,Hit,Hit,Hit,Miss
+129,HBY101.JPG,"[2, 4]",4.421,Miss,Hit,Miss,Hit
+130,HBY5.JPG,"[1, 2, 3]",3.318,Hit,Hit,Hit,Correct rejection
+131,BR18.JPG,"[1, 2, 3]",3.418,Hit,Hit,Hit,Correct rejection
+132,HBG430.JPG,"[3, 4]",1.810,Correct rejection,Correct rejection,Hit,Hit
+133,HBY94.JPG,[2],3.911,Miss,Hit,Correct rejection,Correct rejection
+134,HBY90.JPG,"[1, 2]",3.515,Hit,Hit,Miss,Miss
+135,HBY46.JPG,[4],3.710,Correct rejection,Correct rejection,Miss,False alarm
+136,HBY14.JPG,"[1, 2, 3, 4]",3.622,Hit,False alarm,False alarm,Hit
+137,HBG60.JPG,"[1, 3, 4]",4.320,False alarm,Correct rejection,Hit,False alarm
+138,HBG491.JPG,"[1, 4]",4.615,Hit,Correct rejection,Correct rejection,Hit
+139,HBG134.JPG,"[1, 3, 4]",4.621,Hit,Correct rejection,Hit,False alarm
+140,HBR12.JPG,"[3, 4]",4.023,Correct rejection,Correct rejection,Hit,Hit
+141,HBG69.JPG,"[3, 4]",2.012,Correct rejection,Correct rejection,Hit,Hit
+142,HBY24.JPG,"[2, 3, 4]",4.220,Miss,False alarm,False alarm,Hit
+143,HBG189.JPG,"[1, 4]",4.915,Hit,Miss,Correct rejection,False alarm
+144,HBR45.JPG,"[2, 3, 4]",2.715,Correct rejection,Hit,Hit,Hit
+145,HBY129.JPG,"[2, 3]",2.412,Correct rejection,Hit,Hit,Correct rejection
+146,HBY162.JPG,"[2, 3, 4]",3.316,Miss,Hit,Hit,Hit
+147,HBY107.JPG,"[1, 2, 3, 4]",2.220,Hit,Hit,Hit,Hit
+148,HBY52.JPG,"[1, 2, 3]",2.415,Hit,Hit,Hit,Correct rejection
+149,HBG431.JPG,"[3, 4]",2.611,Correct rejection,Miss,Hit,False alarm
+150,HBY140.JPG,[4],5.410,Miss,Miss,Miss,Hit
+151,HBG17.JPG,"[1, 2, 3]",4.117,Hit,Hit,False alarm,Correct rejection
+152,HBG485.JPG,"[2, 3, 4]",3.717,Correct rejection,Hit,Hit,False alarm
+153,HBY4.JPG,"[1, 2, 3]",3.218,Hit,Hit,False alarm,Correct rejection
+154,HBR42.JPG,"[1, 3, 4]",3.115,Hit,Miss,Hit,False alarm
+155,HBY128.JPG,"[1, 2, 3, 4]",3.720,Hit,Hit,Hit,Hit
+156,HBG135.JPG,"[1, 2, 3]",3.919,False alarm,Hit,Hit,Correct rejection
+157,HBY89.JPG,"[1, 2, 3, 4]",5.625,Hit,Hit,Hit,Hit
+158,HBR29.JPG,[1],2.707,Hit,Miss,Correct rejection,Correct rejection
+159,HBY116.JPG,"[1, 4]",1.710,Hit,Correct rejection,Correct rejection,Hit
+160,HBY121.JPG,"[1, 2]",1.910,Hit,Hit,Correct rejection,Correct rejection
+161,HBY136.JPG,"[1, 2]",1.610,Hit,False alarm,Correct rejection,Correct rejection
+162,HBY154.JPG,"[3, 4]",1.710,Miss,Miss,Hit,Hit
+163,HBY171.JPG,[3],1.004,Correct rejection,Correct rejection,Hit,Correct rejection
+164,HBG310.JPG,"[1, 4]",4.115,Hit,Miss,Correct rejection,Hit
+165,HBY174.JPG,"[1, 2]",3.712,Hit,Hit,Miss,Miss
+166,HBG50.JPG,[4],4.811,Correct rejection,Correct rejection,Correct rejection,Hit
+167,HBG214.JPG,"[2, 3]",4.014,Correct rejection,Hit,False alarm,Correct rejection
+168,HBG88.JPG,"[1, 3, 4]",2.817,Hit,Correct rejection,Hit,Hit
+169,HBY145.JPG,"[1, 2, 3]",4.827,Hit,Hit,Hit,Correct rejection
+170,HBG437.JPG,[3],6.913,Correct rejection,Correct rejection,False alarm,Miss
+171,HBG446.JPG,"[2, 3, 4]",2.415,Miss,Hit,Hit,Hit
+172,HBG85.JPG,"[2, 3, 4]",2.315,Correct rejection,Hit,Hit,Hit
+173,HBG113.JPG,"[3, 4]",1.711,Correct rejection,Correct rejection,Hit,Hit
+174,HB126.JPG,"[1, 4]",2.714,Hit,Correct rejection,Miss,Hit
+175,HBY143.JPG,"[2, 4]",3.012,Correct rejection,Hit,Correct rejection,Hit
+176,HBG290.JPG,[4],3.910,Miss,Miss,Correct rejection,False alarm
+177,HBR39.JPG,"[1, 2, 3]",2.914,Hit,Hit,Hit,Correct rejection
+178,HBY22.JPG,"[3, 4]",3.013,Miss,Miss,False alarm,False alarm
+179,HBG84.JPG,"[2, 3, 4]",3.218,Miss,Hit,Hit,Hit
+180,HBY176.JPG,"[1, 2, 3, 4]",2.618,Hit,Hit,Hit,Hit
+181,HBY106.JPG,"[2, 3]",3.613,Miss,Hit,Hit,Correct rejection
+182,HBG6.JPG,"[2, 3, 4]",6.622,Correct rejection,Hit,False alarm,Hit
+183,HB125.JPG,"[1, 4]",6.818,Hit,Correct rejection,Correct rejection,Hit
+184,HBY98.JPG,"[1, 2, 3]",2.816,Hit,Hit,Hit,Correct rejection
+185,HBY137.JPG,"[1, 2, 3, 4]",4.321,False alarm,Hit,Hit,Hit
+186,HBG51.JPG,[1],10.918,Hit,Miss,Correct rejection,Correct rejection
+187,HBR36.JPG,"[2, 4]",5.514,Correct rejection,Hit,Correct rejection,False alarm
+188,HBG499.JPG,"[1, 2, 3]",3.825,Hit,Hit,Hit,Correct rejection
+189,HBR21.JPG,"[1, 2, 3, 4]",3.823,Hit,Hit,Hit,Hit
+190,HBY155.JPG,[4],3.208,Correct rejection,Correct rejection,Correct rejection,Hit
+191,HBY119.JPG,"[2, 3]",6.416,Correct rejection,Hit,False alarm,Correct rejection
+192,HBY44.JPG,"[1, 2, 3, 4]",3.323,Hit,Hit,False alarm,False alarm
+193,HBG292.JPG,"[3, 4]",5.424,Correct rejection,Miss,False alarm,False alarm
+194,HBY93.JPG,"[1, 2]",3.514,Hit,Hit,Correct rejection,Correct rejection
+195,HBR34.JPG,"[2, 3, 4]",4.019,Correct rejection,Hit,Hit,Hit
+196,HBG359.JPG,"[1, 2, 3, 4]",2.218,Hit,Hit,Hit,False alarm
+197,HBY148.JPG,"[1, 2, 4]",2.815,Hit,Hit,Correct rejection,Hit
+198,HBR24.JPG,"[1, 4]",2.713,Hit,Miss,Miss,Hit
+199,HBY49.JPG,"[1, 2, 4]",2.218,Hit,Hit,Correct rejection,Hit
