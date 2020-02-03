@@ -77,7 +77,6 @@ def get_response(mouse, quadrants, window, img):
         for qn in range(len(quadrants)):
             # Update GUI and quadrants pressed if mouse clicked in one of them
             if mouse.isPressedIn(quadrants[qn]):
-                event.clearEvents()
                 if qn+1 in quads_pressed:
                     # Deselect quadrant
                     quads_pressed.remove(qn+1)
@@ -86,8 +85,9 @@ def get_response(mouse, quadrants, window, img):
                     quads_pressed.append(qn+1)
                 redraw_quadrants(quadrants, quads_pressed, window, img)
                 break
-
-        core.wait(0.001)
+        
+        event.clearEvents()
+        core.wait(0.1)
 
     event.clearEvents()
     quads_pressed.sort()
